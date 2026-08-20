@@ -55,7 +55,7 @@ Component nulls remain open for L / C / A / X and their composition.
 4. Black-box interface probing before source inspection. **V1 + V2 DONE**
 5. Freeze observed pressure surface. **DONE THROUGH V2**
 6. Freeze ARC3 operationalization contract. **DONE — `fac9362`**
-7. Freeze exact implementation schema, metrics, matched baseline, arm matrix, and evaluation procedure. **DONE — `a2745c1`**
+7. Freeze exact implementation schema, metrics, matched baseline, arm matrix, and evaluation procedure. **DONE — v1 `a2745c1`; v1.1 repair `6e4dfe2` after SF-001**
 8. Implement the preregistered mechanism-isolation baseline and CEA component/composition arms. **NEXT**
 9. Verify implementation invariants before comparative execution.
 10. Run matched development experiments and component ablations.
@@ -133,15 +133,24 @@ Experimental-fairness tightening: the matched control receives the same raw inte
 
 V2 forces history into the first transition-relevant Core representation but does not authorize naming the hidden distinction. Competing latent explanations may remain explicitly unresolved.
 
-## Implementation preregistration v1
+## Implementation preregistration
 
-Commit `a2745c1` freezes the first mechanism-isolation implementation specification before code or comparative results.
+Commit `a2745c1` froze implementation preregistration v1 before code or comparative results.
+
+During implementation preparation, v1 was found internally incomplete: candidate generation required predicate-conditioned accumulated evidence, while the only authorized long-lived ordinary model state contained base-context counts and `H_raw` prohibited older raw events. This was recorded as `SPECIFICATION_FAILURE SF-001` at commit `3b86f8c` before any implementation result.
+
+Commit `6e4dfe2` freezes the minimal v1.1 repair. It adds only non-reconstructive aggregate predicate-contingency counts `Q_t` to the ordinary predictive state. `H_raw` remains exactly two completed transitions plus the current observation; no raw transcript widening, semantic feature addition, threshold change, budget change, or arm change was authorized.
+
+The operative implementation specification is therefore:
+
+`IMPLEMENTATION_PREREGISTRATION_V1.md + IMPLEMENTATION_PREREGISTRATION_V1_1.md`.
 
 Key frozen choices include:
 
 - raw history bound `H_raw = 2 completed transitions + current observation`;
 - no historical full-frame transcript outside the current frame;
 - exact schemas for `R_t`, `M_t`, `G_t`, `Lambda_t`, and `H_t`;
+- ordinary base predictive counts plus v1.1 aggregate predicate contingencies `Q_t`;
 - primary transition target `z_t = 1[O_{t+1} != O_t]` with prequential binary NLL;
 - bounded non-semantic hypothesis predicate language;
 - localized CLPR correction operator;
@@ -151,8 +160,6 @@ Key frozen choices include:
 - exact metric definitions and a 256-action development budget per game;
 - arm matrix including a conventional generic-persistence control;
 - typed `IMPLEMENTATION_INVALID` and `SPECIFICATION_FAILURE` handling.
-
-The `H_raw=2` bound is deliberately restrictive: it is the smallest raw window that directly represents the two-step dependencies measured by V2. Older information may survive only through typed, provenance-bearing model/hypothesis/canonical state permitted by the preregistration.
 
 ## Current authority state
 
@@ -166,12 +173,12 @@ Earned:
 - black-box short-sequence transition evidence
 - transition-relevant observational aliasing for the visible-frame interface in at least 3 development games
 - ARC3 operationalization contract v1
-- implementation preregistration v1
+- implementation preregistration v1 plus admissible pre-result v1.1 repair
 - requirement that first transition-relevant state representation include bounded interaction history
 
 Authorized next:
 
-- code implementation against `IMPLEMENTATION_PREREGISTRATION_V1.md`
+- code implementation against the operative v1+v1.1 specification
 - unit/invariant verification of that implementation
 - development-only matched execution only after verification passes
 
