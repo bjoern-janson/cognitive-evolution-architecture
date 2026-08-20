@@ -57,3 +57,55 @@ At discovery:
 - environment source inspection: **0**.
 
 Therefore the minimal v1.1 revision is admissible before implementation execution.
+
+---
+
+## SF-002 — overlapping localized-correction arbitration unspecified
+
+Status: **CONFIRMED DURING UNIT IMPLEMENTATION, BEFORE ENVIRONMENT EXECUTION OR COMPARATIVE RESULT**.
+
+Affected specifications: v1 plus v1.1.
+
+### Conflict
+
+The frozen predicate language allows more than one provisional or canonical localized correction to match the same action-prediction context. The specification defines the local correction value for each claim, but does not define whether simultaneous matching corrections are:
+
+- summed;
+- averaged;
+- composed sequentially;
+- selected by evidence;
+- selected by recency; or
+- otherwise arbitrated.
+
+Those choices produce different predictions and therefore different L/C behavior. Choosing one in code would silently define a new mechanism.
+
+### Classification
+
+`SPECIFICATION_FAILURE` at the correction/composition interface.
+
+This is not empirical evidence for or against CLPR or CEA.
+
+### Minimal sufficient revision
+
+Create implementation preregistration v1.2 with a **non-compositional correction rule**:
+
+1. At most one localized correction may modify any single primary transition prediction.
+2. Among matching provisional corrections, select the claim with greatest cumulative **forward** primary NLL gain; before any forward event, use proposal-stage gain; ties break by lexicographically smallest `claim_id`.
+3. Among matching canonical corrections, select the claim whose authorization decision recorded the greatest forward primary NLL gain at promotion; ties break by lexicographically smallest `claim_id`.
+4. If both a canonical and provisional correction match, the canonical correction has precedence.
+5. No correction deltas are added, averaged, stacked, or recursively composed in implementation v1.x.
+
+The authorization decision must therefore persist the frozen `forward_gain_nll` metric in `Lambda_t.decision.metric_values`; this uses the already authorized lineage schema rather than adding a new canonical-memory field.
+
+### Evidence contamination state
+
+At discovery:
+
+- pure unit/invariant tests executed: **YES**;
+- unit tests passed before discovery: **15/15**;
+- ARC development environment execution under implementation: **NO**;
+- comparative arm result observed: **NO**;
+- sealed-holdout exposure: **0**;
+- environment source inspection: **0**.
+
+Therefore a minimal v1.2 clarification remains admissible before empirical implementation execution.
