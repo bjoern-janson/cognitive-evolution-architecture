@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Callable, Optional
 
@@ -8,9 +8,11 @@ import numpy as np
 
 from .arms import ARMS, ArmConfig
 from .core import MechanismCore
+from .descriptors import describe_observation
 from .firewall import assert_development_slug, assert_isolated_root
 from .logger import EventLogger
-from .transition import frame_sha256, transition_record_from_arrays
+from .state import GoalState, RepresentationalState
+from .transition import action_mask, frame_sha256, transition_record_from_arrays
 
 ACTION_BUDGET = 256
 
@@ -38,13 +40,28 @@ def state_name(frame: Any) -> str:
 class RunResult:
     game_slug: str
     arm: str
+    seed: int
     actions: int
     levels_completed: int
     terminal_state: str
     transition_nll: float
+    parent_transition_nll: float
+    secondary_nll: dict[str, float]
+    per_level_primary_nll: dict[int, float]
+    aliasing_triggers: int
+    admitted_claims: int
+    forward_supported_claims: int
+    provisional_applications: int
+    canonical_applications: int
     total_promotions: int
+    ungated_promotions: int
+    eligible_promotion_events: int
     unauthorized_rate: float
     false_refusal_strict: float
+    false_refusal_including_capacity: float
+    capacity_refusals: int
+    localization_violations: int
+    policy_counts: dict[str, int]
 
 
 class DevelopmentRunner:
@@ -83,19 +100,56 @@ class DevelopmentRunner:
             raise RuntimeError(f"failed to initialize development game {game_slug}")
 
         core = MechanismCore(config, game_slug)
-        logger = EventLogger(self.log_dir / f"{game_slug}.{config.name}.jsonl") if self.log_dir else None
+        logger = EventLogger(self.log_dir / f"{game_slug}.{config.name}.seed{seed}.jsonl") if self.log_dir else None
         current = env.observation_space
         actions = 0
+
+        if logger:
+            logger.append("run_start", {
+                "game_slug": game_slug,
+                "arm": config.name,
+                "seed": int(seed),
+                "action_budget": int(action_budget),
+                "environment_membership_count": len(envs),
+            })
 
         while actions < action_budget and state_name(current) not in {"WIN", "GAME_OVER"}:
             before_arr = visible_array(current)
             before_hash = frame_sha256(before_arr)
             avail = available_action_ids(current)
+            descriptor = describe_observation(before_arr, avail)
+            goal = GoalState(
+                environment_state=state_name(current),
+                levels_completed=int(current.levels_completed),
+                live_action_mask=action_mask(avail),
+                remaining_action_budget=int(action_budget - actions),
+                remaining_wallclock_budget=None,
+            )
+            # Materialize the frozen R/G state. The current frame exists only for
+            # the live decision and is never serialized as historical evidence.
+            _r_state = RepresentationalState(
+                current_frame=before_arr,
+                descriptor=descriptor,
+                raw_window=core.history,
+                distinctions=dict(core.hypotheses.live) if config.L else {},
+            )
+
             aid, coord, policy_mode = core.choose_action(before_hash, avail)
+            core.metrics.record_policy(policy_mode)
             if aid == 0:
+                if logger:
+                    logger.append("no_action_available", {
+                        "game_slug": game_slug,
+                        "arm": config.name,
+                        "seed": int(seed),
+                        "step": actions,
+                        "goal": asdict(goal),
+                        "descriptor": asdict(descriptor),
+                    })
                 break
             if aid not in avail:
                 raise RuntimeError(f"policy selected unavailable action {aid}")
+
             pred = core.predict_action(
                 action_token=aid,
                 action_coordinate=coord,
@@ -129,36 +183,77 @@ class DevelopmentRunner:
                 available_actions_after=available_action_ids(after),
                 prior_hashes=prior_hashes,
             )
-            core.observe(prediction=pred, record=record, current_frame_hash_before=before_hash)
+
+            audit_events = core.observe(prediction=pred, record=record, current_frame_hash_before=before_hash)
             core.metrics.action_count += 1
             actions += 1
+
             if logger:
+                score = core.metrics.predictions[-1]
                 logger.append("transition", {
                     "game_slug": game_slug,
                     "arm": config.name,
+                    "seed": int(seed),
                     "step": actions - 1,
+                    "action_legal": True,
                     "policy_mode": policy_mode,
+                    "action_token": aid,
+                    "action_coordinate": coord,
+                    "descriptor": asdict(descriptor),
+                    "goal": asdict(goal),
                     "prediction": {
                         "p_change": pred.probability_change,
                         "parent_p_change": pred.parent_probability,
+                        "secondary": pred.secondary_probabilities,
                         "claim_id": pred.claim_id,
                         "correction_source": pred.correction_source,
                     },
+                    "score": asdict(score),
                     "transition": record,
                 })
+                for kind, payload in audit_events:
+                    logger.append(kind, payload)
             current = after
 
-        return RunResult(
+        result = RunResult(
             game_slug=game_slug,
             arm=config.name,
+            seed=int(seed),
             actions=actions,
             levels_completed=int(current.levels_completed),
             terminal_state=state_name(current),
             transition_nll=core.metrics.transition_nll(),
+            parent_transition_nll=core.metrics.parent_transition_nll(),
+            secondary_nll=core.metrics.secondary_nll(),
+            per_level_primary_nll=core.metrics.per_level_primary_nll(),
+            aliasing_triggers=len(core.metrics.aliasing_trigger_keys),
+            admitted_claims=len(core.metrics.admitted_claims),
+            forward_supported_claims=len(core.metrics.forward_supported_claims),
+            provisional_applications=core.metrics.provisional_applications,
+            canonical_applications=core.metrics.canonical_applications,
             total_promotions=core.metrics.total_promotions,
+            ungated_promotions=core.metrics.ungated_promotions,
+            eligible_promotion_events=core.metrics.eligible_promotion_events,
             unauthorized_rate=core.metrics.unauthorized_rate(),
             false_refusal_strict=core.metrics.false_refusal_strict(),
+            false_refusal_including_capacity=core.metrics.false_refusal_including_capacity(),
+            capacity_refusals=core.metrics.capacity_refusals,
+            localization_violations=core.metrics.localization_violations,
+            policy_counts=dict(core.metrics.policy_counts),
         )
+
+        if logger:
+            # End snapshots make durable Lambda_t completeness directly auditable.
+            logger.append("lineage_snapshot", {
+                "evidence": {k: asdict(v) for k, v in sorted(core.lineage.evidence.items())},
+                "claims": {k: asdict(v) for k, v in sorted(core.lineage.claims.items())},
+                "decisions": {k: asdict(v) for k, v in sorted(core.lineage.decisions.items())},
+            })
+            logger.append("canonical_snapshot", {
+                "entries": {k: asdict(v) for k, v in sorted(core.memory.entries.items())}
+            })
+            logger.append("run_summary", asdict(result))
+        return result
 
     @staticmethod
     def _expected_games():
