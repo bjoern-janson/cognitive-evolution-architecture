@@ -1,0 +1,61 @@
+{
+  "algorithm": "eligible clean slugs sorted ascending by SHA256(seed + \"|\" + game_slug); first 7 = SEALED_HOLDOUT; all others = DEVELOPMENT",
+  "artifact": "CEA ARC-AGI-3 Experiment 2 sealed public-game split",
+  "development": [
+    "ar25-0c556536",
+    "bp35-0a0ad940",
+    "cd82-fb555c5d",
+    "ft09-0d8bbf25",
+    "g50t-5849a774",
+    "ka59-38d34dbb",
+    "ls20-9607627b",
+    "r11l-495a7899",
+    "re86-8af5384d",
+    "s5i5-18d95033",
+    "sb26-7fbdac44",
+    "sc25-635fd71a",
+    "sk48-d8078629",
+    "sp80-589a99af",
+    "su15-1944f8ab",
+    "tu93-0768757b",
+    "vc33-5430563c",
+    "wa30-ee6fef47"
+  ],
+  "development_count": 18,
+  "freeze_date": "2026-08-20",
+  "holdout_count": 7,
+  "kaggle_contract_url": "https://www.kaggle.com/competitions/arc-prize-2026-arc-agi-3/data",
+  "mechanics_read_from_environment_files": false,
+  "mirror_provenance": {
+    "authority_note": "Used only as a byte/identifier witness for the 25 public bundle. Kaggle remains competition authority. Local Kaggle bytes must be verified before mechanics inspection.",
+    "environment_files_tree_sha": "b53b9034f810c286fec24980a17cdd84ccf11403",
+    "git_tree_sha": "7dccef15650fa00ef1db1c21cc7279adcf4a9e2a",
+    "repository": "shloksah/arc-agi-3-agent",
+    "url": "https://github.com/shloksah/arc-agi-3-agent/tree/7dccef15650fa00ef1db1c21cc7279adcf4a9e2a/environment_files"
+  },
+  "preexposed_development_only": [
+    "ar25",
+    "bp35",
+    "cd82",
+    "ft09",
+    "g50t",
+    "ls20",
+    "r11l",
+    "sp80",
+    "su15",
+    "tu93",
+    "vc33",
+    "wa30"
+  ],
+  "role_is_slug_stable": true,
+  "sealed_holdout": [
+    "cn04-2fe56bfb",
+    "dc22-fdcac232",
+    "lf52-271a04aa",
+    "lp85-305b61c3",
+    "m0r0-492f87ba",
+    "tn36-ef4dde99",
+    "tr87-cd924810"
+  ],
+  "seed": "CEA_ARC3_EXP2_SPLIT_V1|2026-08-20|slug-only"
+}
