@@ -68,14 +68,7 @@ Affected specifications: v1 plus v1.1.
 
 ### Conflict
 
-The frozen predicate language allows more than one provisional or canonical localized correction to match the same action-prediction context. The specification defines the local correction value for each claim, but does not define whether simultaneous matching corrections are:
-
-- summed;
-- averaged;
-- composed sequentially;
-- selected by evidence;
-- selected by recency; or
-- otherwise arbitrated.
+The frozen predicate language allows more than one provisional or canonical localized correction to match the same action-prediction context. The specification defines the local correction value for each claim, but does not define whether simultaneous matching corrections are summed, averaged, composed sequentially, selected by evidence, selected by recency, or otherwise arbitrated.
 
 Those choices produce different predictions and therefore different L/C behavior. Choosing one in code would silently define a new mechanism.
 
@@ -83,19 +76,15 @@ Those choices produce different predictions and therefore different L/C behavior
 
 `SPECIFICATION_FAILURE` at the correction/composition interface.
 
-This is not empirical evidence for or against CLPR or CEA.
-
 ### Minimal sufficient revision
 
 Create implementation preregistration v1.2 with a **non-compositional correction rule**:
 
 1. At most one localized correction may modify any single primary transition prediction.
-2. Among matching provisional corrections, select the claim with greatest cumulative **forward** primary NLL gain; before any forward event, use proposal-stage gain; ties break by lexicographically smallest `claim_id`.
+2. Among matching provisional corrections, select the claim with greatest cumulative forward primary NLL gain; before any forward event, use proposal-stage gain; ties break by lexicographically smallest `claim_id`.
 3. Among matching canonical corrections, select the claim whose authorization decision recorded the greatest forward primary NLL gain at promotion; ties break by lexicographically smallest `claim_id`.
-4. If both a canonical and provisional correction match, the canonical correction has precedence.
+4. Canonical correction has precedence over provisional correction.
 5. No correction deltas are added, averaged, stacked, or recursively composed in implementation v1.x.
-
-The authorization decision must therefore persist the frozen `forward_gain_nll` metric in `Lambda_t.decision.metric_values`; this uses the already authorized lineage schema rather than adding a new canonical-memory field.
 
 ### Evidence contamination state
 
@@ -109,3 +98,54 @@ At discovery:
 - environment source inspection: **0**.
 
 Therefore a minimal v1.2 clarification remains admissible before empirical implementation execution.
+
+---
+
+## SF-003 — proposal provenance conflicts with non-reconstructive aggregate storage
+
+Status: **CONFIRMED DURING UNIT IMPLEMENTATION, BEFORE ENVIRONMENT EXECUTION OR COMPARATIVE RESULT**.
+
+Affected specifications: v1 lineage schema plus v1.1 aggregate candidate-generation rule.
+
+### Conflict
+
+v1 requires every hypothesis to record creation evidence identifiers. v1.1 then deliberately restricts proposal-stage historical storage to non-reconstructive aggregate contingency counts `Q_t` and forbids recovering older raw events to perform candidate generation.
+
+Once proposal evidence has left `H_raw`, exact per-event creation identifiers cannot be reconstructed from `Q_t` without adding an event index or other reconstructive state that v1.1 explicitly forbids.
+
+Therefore the two requirements cannot both be implemented exactly.
+
+### Classification
+
+`SPECIFICATION_FAILURE` at the provenance/representation interface.
+
+This is not evidence for or against any CEA component.
+
+### Minimal sufficient revision
+
+Create implementation preregistration v1.3 with a two-tier provenance rule:
+
+1. **Proposal-stage provenance** is represented by an immutable snapshot descriptor of the exact aggregate evidence state that generated the candidate:
+   - base context;
+   - predicate id/value;
+   - parent aggregate counts;
+   - local aggregate counts;
+   - proposal gain;
+   - deterministic SHA-256 of that canonicalized snapshot.
+2. The hypothesis stores `proposal_snapshot_hash` and `proposal_snapshot_counts`, not historical creation event IDs.
+3. **Forward authorization evidence** remains individually identified exactly as frozen: every forward scored event contributing to support/gain receives an `evidence_id`, and those IDs are stored on the hypothesis and in authorization lineage.
+4. X lineage completeness is evaluated over forward authorization evidence IDs plus the proposal snapshot hash.
+5. No event index, ordered historical event list, or reconstructive transcript is added to `Q_t`.
+
+### Evidence contamination state
+
+At discovery:
+
+- pure unit/invariant tests executed: **YES**;
+- latest unit suite before discovery: **20/20 passed**;
+- ARC development environment execution under implementation: **NO**;
+- comparative arm result observed: **NO**;
+- sealed-holdout exposure: **0**;
+- environment source inspection: **0**.
+
+Therefore a minimal v1.3 provenance repair remains admissible before empirical implementation execution.
