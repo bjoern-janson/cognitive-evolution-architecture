@@ -75,7 +75,7 @@ Only interface-visible evidence is admissible:
 
 ## Black-box V1 result
 
-Commit `183adb1` records the first interface probe:
+Commit `6dc9fb6` records the first interface probe artifacts:
 
 - 18/18 development games characterized
 - 84 fresh-reset one-step interventions
