@@ -263,7 +263,9 @@ class MechanismCore:
                 self.metrics.admitted_claims.add(h.claim_id)
                 audit.append(("claim_created", h))
             for claim_id in evicted_ids:
-                audit.append(("hypothesis_evicted", {"claim_id": claim_id, "level": self.level, "step": self.step}))
+                if claim_id in self.lineage.claims:
+                    self.lineage.update_claim_status(claim_id, "EVICTED")
+                audit.append(("hypothesis_evicted", {"claim_id": claim_id, "level": self.level, "step": self.step, "status": "EVICTED"}))
 
             audit.extend(self._maybe_promote_all())
 
@@ -423,6 +425,9 @@ class MechanismCore:
         self.history.clear()
         if not self.arm.persist_theta:
             self.model.reset()
+        for h in self.hypotheses.live.values():
+            if h.status == "PROVISIONAL" and h.claim_id in self.lineage.claims:
+                self.lineage.update_claim_status(h.claim_id, "EXPIRED")
         self.hypotheses.clear()
         if not self.arm.C:
             self.memory.clear()
