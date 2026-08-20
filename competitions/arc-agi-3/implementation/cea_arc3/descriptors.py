@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import Counter
 from typing import Iterable
 
 import numpy as np
@@ -20,4 +21,10 @@ def describe_observation(frame: np.ndarray, available_actions: Iterable[int]) ->
         hist[int(v)] = int(c)
     modal = int(vals[int(np.argmax(counts))])
     non_modal = int(arr.size - hist[modal])
-    return ObservationDescriptor(frame_sha256=frame_sha256(arr), color_histogram=tuple(hist), non_modal_color=modal, non_modal_cells=non_modal, available_action_mask=action_mask(available_actions))
+    return ObservationDescriptor(
+        frame_sha256=frame_sha256(arr),
+        color_histogram=tuple(hist),
+        non_modal_color=modal,
+        non_modal_cells=non_modal,
+        available_action_mask=action_mask(available_actions),
+    )

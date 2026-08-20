@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+from dataclasses import dataclass
 from typing import Any, Iterable, Optional
 
 from .state import CanonicalEntry, Hypothesis, LineageState
@@ -34,7 +35,11 @@ def scope_matches(scope: tuple[Any, ...], context: tuple[Any, ...], predicate_va
     return parent == context and predicate_values.get(pid) == value
 
 
-def select_provisional(hypotheses: Iterable[Hypothesis], context: tuple[Any, ...], predicate_values: dict[str, Any]) -> Optional[Hypothesis]:
+def select_provisional(
+    hypotheses: Iterable[Hypothesis],
+    context: tuple[Any, ...],
+    predicate_values: dict[str, Any],
+) -> Optional[Hypothesis]:
     matching = [h for h in hypotheses if h.status == "PROVISIONAL" and scope_matches(h.scope, context, predicate_values)]
     if not matching:
         return None
@@ -44,7 +49,12 @@ def select_provisional(hypotheses: Iterable[Hypothesis], context: tuple[Any, ...
     return sorted(matching, key=rank)[0]
 
 
-def select_canonical(entries: Iterable[CanonicalEntry], lineage: LineageState, context: tuple[Any, ...], predicate_values: dict[str, Any]) -> Optional[CanonicalEntry]:
+def select_canonical(
+    entries: Iterable[CanonicalEntry],
+    lineage: LineageState,
+    context: tuple[Any, ...],
+    predicate_values: dict[str, Any],
+) -> Optional[CanonicalEntry]:
     matching = [e for e in entries if e.status.value == "AUTHORIZED" and scope_matches(e.scope_predicate, context, predicate_values)]
     if not matching:
         return None
