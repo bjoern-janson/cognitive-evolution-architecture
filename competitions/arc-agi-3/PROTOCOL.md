@@ -1,87 +1,108 @@
 # ARC-AGI-3 Experiment 2 Protocol
 
-Freeze date: 2026-08-20
+Status: active proving-ground protocol on branch `arc3-exp2`.
 
-## Objective
+## Scope
 
-Test whether CEA's governance of representation, correction, adaptive exploration, and persistence provides measurable benefit in novel interactive environments under matched model, compute, and action budgets.
+ARC-AGI-3 is used as a full agentic proving ground for the frozen Cognitive Evolution Architecture conception. The experiment must distinguish benchmark performance from evidence for CEA-specific mechanisms.
 
-The scientific object is not merely competitive score. The experiment must separate a competitive agent from a CEA scientific instrument that records hypothesis survival, localized correction, information-acquisition cost, memory reuse, cross-level transfer, false generalization, rule scope, and unauthorized persistence.
+## Corpus firewall
 
-## Architecture mapping
+Public corpus:
 
-- `L` / CLPR: localized, corrigible representation of environment distinctions.
-- `C` / Cognitive Core: observe -> predict -> act -> consequence -> evaluate -> correct -> remember.
-- `A` / AIEC: allocate scarce actions between information acquisition and exploitation.
-- `X` / authority substrate: prevent weak/local evidence from becoming over-scoped persistent rules.
+- 25 public ARC-AGI-3 games from the Kaggle competition bundle.
+- 18 DEVELOPMENT games.
+- 7 SEALED_HOLDOUT games.
 
-This mapping is a specification target, not an empirical result.
+Frozen holdout slugs:
 
-## Strong nulls
+`cn04`, `dc22`, `lf52`, `lp85`, `m0r0`, `tn36`, `tr87`.
 
-- `H0_L`: localized corrigible representation adds no benefit.
-- `H0_C`: validated persistent correction adds no benefit.
-- `H0_A`: adaptive exploration allocation adds no benefit over a matched fixed exploration policy.
-- `H0_X`: warrant-gated persistence adds no benefit over unrestricted memory.
-- `H0_Cmp`: `L+C+A+X` has no interaction advantage under matched model, compute, and action budgets.
+The sealed holdout must not be used for source inspection, metadata inspection, manual play, replay inspection, solver research, tuning, or development feedback before the first frozen candidate evaluation.
 
-## Public-game firewall
+Development runtime construction must physically exclude the seven sealed slugs before the ARC toolkit scans `metadata.json`.
 
-Public corpus size: 25.
+## Epistemic firewall
 
-Development slugs:
+Maintain:
 
-`ar25 bp35 cd82 ft09 g50t ka59 ls20 r11l re86 s5i5 sb26 sc25 sk48 sp80 su15 tu93 vc33 wa30`
+- framework assertion != empirical demonstration
+- specification != implementation != verification result
+- component witness != composition witness
+- evaluation != mutation
+- frame change != progress
+- no-op != uselessness
 
-Sealed holdout slugs:
+Authority scope may not exceed discrimination scope.
 
-`cn04 dc22 lf52 lp85 m0r0 tn36 tr87`
+## ARC-specific scientific question
 
-For a sealed game, before the first frozen learner evaluation:
+Primary strong null:
 
-- no source inspection;
-- no metadata inspection;
-- no manual play;
-- no replay or walkthrough inspection;
-- no game-specific solver research;
-- no tuning from its behavior;
-- no local-runtime discovery over a root containing it.
+`H0: CEA corrective machinery provides no advantage over a strong matched reactive/reflection/world-model agent under matched model, compute, and action budgets.`
 
-Non-semantic path/hash verification is allowed.
+Component nulls remain open for L / C / A / X and their composition.
 
-## Development-root rule
+## Development sequence
 
-Do not initialize the ARC local engine against the original 25-game directory. Construct an isolated root containing only the 18 development environments and point local execution there.
+1. Freeze public provenance and sealed split.
+2. Build development-only runtime root.
+3. Inventory development metadata.
+4. Black-box interface probing before source inspection.
+5. Freeze observed pressure surface.
+6. Build strong non-CEA baseline.
+7. Specify the minimal ARC-specific L+C+A+X implementation forced by development evidence.
+8. Run matched component ablations.
+9. Freeze first candidate.
+10. One-shot seven-game sealed evaluation.
+11. Generate Kaggle notebook.
+12. External 110-game competition evaluation.
 
-`prepare_dev_env.py` is the canonical preparation step on this branch.
+## Black-box probe rule
 
-## Provenance rule
+Development game implementation files may be executed by the official local environment wrapper because this is necessary to instantiate the environment, but their source text must not be inspected, parsed, searched, displayed, summarized, or supplied to the agent as information during the black-box phase.
 
-Every consequential experiment should be traceable to:
+Only interface-visible evidence is admissible:
 
-`commit SHA + CEA configuration + corpus manifest + factor configuration + run metadata + notebook build + Kaggle version/result`
+- observations / frames
+- state
+- levels completed
+- available actions
+- chosen action and coordinate data
+- resulting observation/state
+- reset behavior
+- recordings produced from interface-visible interactions
 
-A generated Kaggle notebook must embed or copy all runtime source required for offline competition execution. It must not depend on network access at hidden-test time.
+## Black-box V1 result
 
-## Promotion firewall
+Commit `183adb1` records the first interface probe:
 
-A high ARC score does not by itself establish CEA advantage, mechanism necessity, interface invention, or composition witness.
+- 18/18 development games characterized
+- 84 fresh-reset one-step interventions
+- 57/84 visible frame changes
+- 27/84 visible no-ops
+- 0/84 one-step level completions
+- all post-probe states remained `NOT_FINISHED`
+- same-seed RESET initial-frame repeatability 18/18
 
-Component and composition claims require matched ablations and evidence with discrimination scope at least as strong as the claimed authority.
+The V1 evidence directly rejects treating `frame_changed` as an authorized synonym for usefulness/progress. It also leaves preconditioned, delayed, coordinate-sensitive, and multi-step effects open.
 
-## Current authorization
+## Current authority state
 
-Authorized now:
+Earned:
 
-1. Inspect/play/analyze only the 18 development environments.
-2. Instrument pressure surfaces before committing to a full ARC-specific `L+C+A+X` implementation.
-3. Build strong matched baselines and ablations.
-4. Freeze a first learner before opening the seven sealed public games.
+- public membership/version/byte provenance for uploaded Kaggle bundle
+- frozen 18/7 split
+- development-only runtime isolation
+- development metadata inventory
+- black-box one-step interface evidence
 
-Not authorized now:
+Not earned:
 
-- inspecting sealed-game mechanics;
-- calling public-development performance private-test evidence;
-- promoting semantic overlap with prior-art agents to novelty;
-- promoting conceptual fit to CEA evidence;
-- submitting the untouched Stochastic Goose template merely to test Kaggle plumbing.
+- ARC-specific CEA mechanism necessity
+- CEA benchmark advantage
+- component witnesses
+- composition witness
+- novelty claim
+- sealed-holdout result
+- external 110-game result
