@@ -24,7 +24,7 @@ def describe_observation(frame: np.ndarray, available_actions: Iterable[int]) ->
     return ObservationDescriptor(
         frame_sha256=frame_sha256(arr),
         color_histogram=tuple(hist),
-        non_modal_color=modal,
+        modal_color_id=modal,
         non_modal_cells=non_modal,
         available_action_mask=action_mask(available_actions),
     )
