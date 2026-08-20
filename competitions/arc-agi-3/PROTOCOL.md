@@ -33,6 +33,8 @@ Maintain:
 - frame change != progress
 - no-op != uselessness
 - visible frame equality != transition-state identity
+- observational aliasing != task-semantic aliasing
+- transition predictiveness != usefulness
 
 Authority scope may not exceed discrimination scope.
 
@@ -40,7 +42,7 @@ Authority scope may not exceed discrimination scope.
 
 Primary strong null:
 
-`H0: CEA corrective machinery provides no advantage over a strong matched reactive/reflection/world-model agent under matched model, compute, and action budgets.`
+`H0: CEA corrective machinery provides no advantage over a strong matched reactive/reflection/world-model agent under matched model, compute, action budgets, and environment exposure.`
 
 Component nulls remain open for L / C / A / X and their composition.
 
@@ -51,13 +53,14 @@ Component nulls remain open for L / C / A / X and their composition.
 3. Inventory development metadata. **DONE**
 4. Black-box interface probing before source inspection. **V1 + V2 DONE**
 5. Freeze observed pressure surface. **DONE THROUGH V2**
-6. Build strong non-CEA baseline. **NEXT**
-7. Specify the minimal ARC-specific L+C+A+X implementation forced by development evidence.
-8. Run matched component ablations.
-9. Freeze first candidate.
-10. One-shot seven-game sealed evaluation.
-11. Generate Kaggle notebook.
-12. External 110-game competition evaluation.
+6. Freeze ARC3 operationalization contract. **DONE — `fac9362`**
+7. Freeze exact implementation schema, metrics, matched baseline, arm matrix, and evaluation procedure. **NEXT**
+8. Implement strong matched non-CEA baseline and CEA component/composition arms.
+9. Run matched development experiments and component ablations.
+10. Freeze first candidate.
+11. One-shot seven-game sealed evaluation.
+12. Generate Kaggle notebook.
+13. External 110-game competition evaluation.
 
 ## Black-box probe rule
 
@@ -110,6 +113,24 @@ This establishes transition-relevant observational aliasing. It does not establi
 
 V2 also measured sampled ACTION6 coordinate dependence in 6/13 ACTION6 games and exact frame-return transitions in 10 sequences across 2 games.
 
+## ARC3 operationalization contract v1
+
+Commit `fac9362` freezes the first ARC3 operationalization contract.
+
+It defines operational requirements and falsifiers for:
+
+- L / CLPR;
+- C / Cognitive Core;
+- A / AIEC;
+- X / authority substrate;
+- matched non-CEA control;
+- component/composition arms;
+- transition, persistence, future-correction, collateral-damage, and authority-integrity measurements.
+
+Experimental-fairness tightening: the matched control receives the same raw interaction transcript/history exposure as CEA arms. CEA must therefore earn any advantage from structured correction, persistence, adaptive allocation, and authority control rather than from privileged memory access.
+
+V2 forces history into the first transition-relevant Core representation but does not authorize naming the hidden distinction. Competing latent explanations may remain explicitly unresolved.
+
 ## Current authority state
 
 Earned:
@@ -121,14 +142,25 @@ Earned:
 - black-box one-step interface evidence
 - black-box short-sequence transition evidence
 - transition-relevant observational aliasing for the visible-frame interface in at least 3 development games
+- ARC3 operationalization contract v1
+- requirement that first transition-relevant state representation include interaction history
+
+Authorized next:
+
+- preregistration of exact state schema and candidate-hypothesis representation
+- preregistration of metric estimators and matched budgets
+- preregistration of baseline and factorial arm semantics
+- implementation after those objects are frozen
 
 Not earned:
 
 - task-relevant consequence model
 - goal/mechanic identification
-- ARC-specific CEA mechanism necessity
+- CLPR witness
+- Core witness
+- AIEC witness
+- X witness
 - CEA benchmark advantage
-- component witnesses
 - composition witness
 - novelty claim
 - sealed-holdout result
