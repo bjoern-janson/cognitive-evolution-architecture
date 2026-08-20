@@ -42,7 +42,7 @@ class AuthorityGate:
             recomputed_snapshot_hash = ""
         claim_record = lineage.claims.get(hypothesis.claim_id)
         all_forward_ids = tuple(hypothesis.evidence_ids) + tuple(hypothesis.sibling_evidence_ids)
-        checks = [
+        eligibility_checks = [
             (bool(hypothesis.scope), "EMPTY_SCOPE"),
             (hypothesis.forward_support >= self.FORWARD_SUPPORT_MIN, "INSUFFICIENT_FORWARD_SUPPORT"),
             (hypothesis.forward_gain_nll >= self.GAIN_MIN_NATS, "INSUFFICIENT_FORWARD_GAIN"),
@@ -58,11 +58,14 @@ class AuthorityGate:
                 "INCOMPLETE_LINEAGE",
             ),
             (not self._looks_semantic(hypothesis), "SEMANTIC_PROMOTION_FORBIDDEN"),
-            (len(memory.entries) < 64 or hypothesis.claim_id in memory.entries, "CAPACITY_REFUSAL"),
         ]
-        failed = [reason for ok, reason in checks if not ok]
+        failed = [reason for ok, reason in eligibility_checks if not ok]
         if failed:
             return AuthorizationDecision(False, False, failed[0], did)
+        # v1.4: `eligible` means every non-capacity predicate is satisfied.
+        # Capacity exhaustion is a separately measured refusal, not an eligibility failure.
+        if not (len(memory.entries) < 64 or hypothesis.claim_id in memory.entries):
+            return AuthorizationDecision(True, False, "CAPACITY_REFUSAL", did)
         return AuthorizationDecision(True, True, "AUTHORIZED", did)
 
     @staticmethod
