@@ -27,10 +27,10 @@ The canonical CEA conception freeze remains untouched. C0 is a separate candidat
 ## Constitution anchor
 
 ```text
-C0 constitution anchor: PENDING FREEZE COMMIT
+C0 constitution anchor: 64c2f48d01b01aeea6ad258978611048f68314c6
 ```
 
-The exact anchor is recorded by a metadata-only descendant after the freeze commit exists. Recording the anchor may update this status file but may not modify the anchored constitution, definitions, or attack protocol.
+This metadata-only descendant records the exact freeze commit. The anchored constitution, definitions, attack protocol, and empty attack ledger remain byte-identical to that commit.
 
 ## Navigation
 
