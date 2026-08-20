@@ -32,6 +32,7 @@ Maintain:
 - evaluation != mutation
 - frame change != progress
 - no-op != uselessness
+- visible frame equality != transition-state identity
 
 Authority scope may not exceed discrimination scope.
 
@@ -45,12 +46,12 @@ Component nulls remain open for L / C / A / X and their composition.
 
 ## Development sequence
 
-1. Freeze public provenance and sealed split.
-2. Build development-only runtime root.
-3. Inventory development metadata.
-4. Black-box interface probing before source inspection.
-5. Freeze observed pressure surface.
-6. Build strong non-CEA baseline.
+1. Freeze public provenance and sealed split. **DONE**
+2. Build development-only runtime root. **DONE**
+3. Inventory development metadata. **DONE**
+4. Black-box interface probing before source inspection. **V1 + V2 DONE**
+5. Freeze observed pressure surface. **DONE THROUGH V2**
+6. Build strong non-CEA baseline. **NEXT**
 7. Specify the minimal ARC-specific L+C+A+X implementation forced by development evidence.
 8. Run matched component ablations.
 9. Freeze first candidate.
@@ -87,6 +88,28 @@ Commit `6dc9fb6` records the first interface probe artifacts:
 
 The V1 evidence directly rejects treating `frame_changed` as an authorized synonym for usefulness/progress. It also leaves preconditioned, delayed, coordinate-sensitive, and multi-step effects open.
 
+## Black-box V2 result
+
+Protocol was preregistered at commit `e68e121`; executable probe implementation was frozen at `f95bcc5`; empirical summary was frozen at `3c7569b`; per-game measurements were frozen at `f996776`.
+
+V2 executed 2,800 fresh-reset sequences and 5,658 action steps across all 18 development games:
+
+- 3,216 steps with visible frame change
+- 2,442 steps with no visible frame change
+- 0 level-completion deltas
+- 0 state changes away from initial `NOT_FINISHED`
+- 0 available-action-surface changes
+
+V2 provides a direct transition-dynamics witness that visible frame equality is not sufficient for transition-state identity. In 11 repeated-identical-action cases across `g50t`, `sc25`, and `wa30`, the first action left the visible frame exactly unchanged while the same action repeated immediately afterward produced a visible change.
+
+Formally, the measured trajectories include successive latent states `s0,s1` and action `a` for which:
+
+`O(s0) = O(s1)` while `O(T(s0,a)) != O(T(s1,a))`.
+
+This establishes transition-relevant observational aliasing. It does not establish task-relevant aliasing, goal structure, usefulness, or a CEA component witness.
+
+V2 also measured sampled ACTION6 coordinate dependence in 6/13 ACTION6 games and exact frame-return transitions in 10 sequences across 2 games.
+
 ## Current authority state
 
 Earned:
@@ -96,9 +119,13 @@ Earned:
 - development-only runtime isolation
 - development metadata inventory
 - black-box one-step interface evidence
+- black-box short-sequence transition evidence
+- transition-relevant observational aliasing for the visible-frame interface in at least 3 development games
 
 Not earned:
 
+- task-relevant consequence model
+- goal/mechanic identification
 - ARC-specific CEA mechanism necessity
 - CEA benchmark advantage
 - component witnesses
