@@ -76,7 +76,7 @@ class RawHistory:
 class ObservationDescriptor:
     frame_sha256: str
     color_histogram: tuple[int, ...]
-    non_modal_color: int
+    modal_color_id: int
     non_modal_cells: int
     available_action_mask: int
 
@@ -95,7 +95,7 @@ class GoalState:
     levels_completed: int
     live_action_mask: int
     remaining_action_budget: int
-    remaining_wallclock_budget: float
+    remaining_wallclock_budget: Optional[float]
 
 
 @dataclass(frozen=True)
