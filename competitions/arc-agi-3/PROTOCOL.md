@@ -35,6 +35,7 @@ Maintain:
 - visible frame equality != transition-state identity
 - observational aliasing != task-semantic aliasing
 - transition predictiveness != usefulness
+- implementation convenience != specification change
 
 Authority scope may not exceed discrimination scope.
 
@@ -54,13 +55,14 @@ Component nulls remain open for L / C / A / X and their composition.
 4. Black-box interface probing before source inspection. **V1 + V2 DONE**
 5. Freeze observed pressure surface. **DONE THROUGH V2**
 6. Freeze ARC3 operationalization contract. **DONE — `fac9362`**
-7. Freeze exact implementation schema, metrics, matched baseline, arm matrix, and evaluation procedure. **NEXT**
-8. Implement strong matched non-CEA baseline and CEA component/composition arms.
-9. Run matched development experiments and component ablations.
-10. Freeze first candidate.
-11. One-shot seven-game sealed evaluation.
-12. Generate Kaggle notebook.
-13. External 110-game competition evaluation.
+7. Freeze exact implementation schema, metrics, matched baseline, arm matrix, and evaluation procedure. **DONE — `a2745c1`**
+8. Implement the preregistered mechanism-isolation baseline and CEA component/composition arms. **NEXT**
+9. Verify implementation invariants before comparative execution.
+10. Run matched development experiments and component ablations.
+11. Freeze first candidate.
+12. One-shot seven-game sealed evaluation.
+13. Generate Kaggle notebook.
+14. External 110-game competition evaluation.
 
 ## Black-box probe rule
 
@@ -131,6 +133,27 @@ Experimental-fairness tightening: the matched control receives the same raw inte
 
 V2 forces history into the first transition-relevant Core representation but does not authorize naming the hidden distinction. Competing latent explanations may remain explicitly unresolved.
 
+## Implementation preregistration v1
+
+Commit `a2745c1` freezes the first mechanism-isolation implementation specification before code or comparative results.
+
+Key frozen choices include:
+
+- raw history bound `H_raw = 2 completed transitions + current observation`;
+- no historical full-frame transcript outside the current frame;
+- exact schemas for `R_t`, `M_t`, `G_t`, `Lambda_t`, and `H_t`;
+- primary transition target `z_t = 1[O_{t+1} != O_t]` with prequential binary NLL;
+- bounded non-semantic hypothesis predicate language;
+- localized CLPR correction operator;
+- level-boundary persistence contrast;
+- AIEC v1 information-allocation rule and fixed-allocation controls;
+- frozen X authorization predicates;
+- exact metric definitions and a 256-action development budget per game;
+- arm matrix including a conventional generic-persistence control;
+- typed `IMPLEMENTATION_INVALID` and `SPECIFICATION_FAILURE` handling.
+
+The `H_raw=2` bound is deliberately restrictive: it is the smallest raw window that directly represents the two-step dependencies measured by V2. Older information may survive only through typed, provenance-bearing model/hypothesis/canonical state permitted by the preregistration.
+
 ## Current authority state
 
 Earned:
@@ -143,17 +166,18 @@ Earned:
 - black-box short-sequence transition evidence
 - transition-relevant observational aliasing for the visible-frame interface in at least 3 development games
 - ARC3 operationalization contract v1
-- requirement that first transition-relevant state representation include interaction history
+- implementation preregistration v1
+- requirement that first transition-relevant state representation include bounded interaction history
 
 Authorized next:
 
-- preregistration of exact state schema and candidate-hypothesis representation
-- preregistration of metric estimators and matched budgets
-- preregistration of baseline and factorial arm semantics
-- implementation after those objects are frozen
+- code implementation against `IMPLEMENTATION_PREREGISTRATION_V1.md`
+- unit/invariant verification of that implementation
+- development-only matched execution only after verification passes
 
 Not earned:
 
+- implementation verification result
 - task-relevant consequence model
 - goal/mechanic identification
 - CLPR witness
