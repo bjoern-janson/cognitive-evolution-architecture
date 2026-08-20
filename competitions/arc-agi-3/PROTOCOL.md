@@ -55,8 +55,8 @@ Component nulls remain open for L / C / A / X and their composition.
 4. Black-box interface probing before source inspection. **V1 + V2 DONE**
 5. Freeze observed pressure surface. **DONE THROUGH V2**
 6. Freeze ARC3 operationalization contract. **DONE — `fac9362`**
-7. Freeze exact implementation schema, metrics, matched baseline, arm matrix, and evaluation procedure. **DONE — v1 `a2745c1`; v1.1 repair `6e4dfe2` after SF-001**
-8. Implement the preregistered mechanism-isolation baseline and CEA component/composition arms. **NEXT**
+7. Freeze exact implementation schema, metrics, matched baseline, arm matrix, and evaluation procedure. **DONE — v1 `a2745c1`; v1.1 `6e4dfe2`; v1.2 `9965c1e`; v1.3 `ab99bff`**
+8. Implement the preregistered mechanism-isolation baseline and CEA component/composition arms. **IN PROGRESS — pure unit suite 28/28 passed locally; no ARC environment execution yet**
 9. Verify implementation invariants before comparative execution.
 10. Run matched development experiments and component ablations.
 11. Freeze first candidate.
@@ -135,25 +135,28 @@ V2 forces history into the first transition-relevant Core representation but doe
 
 ## Implementation preregistration
 
-Commit `a2745c1` froze implementation preregistration v1 before code or comparative results.
+The operative implementation specification is:
 
-During implementation preparation, v1 was found internally incomplete: candidate generation required predicate-conditioned accumulated evidence, while the only authorized long-lived ordinary model state contained base-context counts and `H_raw` prohibited older raw events. This was recorded as `SPECIFICATION_FAILURE SF-001` at commit `3b86f8c` before any implementation result.
+`IMPLEMENTATION_PREREGISTRATION_V1.md + V1_1.md + V1_2.md + V1_3.md`.
 
-Commit `6e4dfe2` freezes the minimal v1.1 repair. It adds only non-reconstructive aggregate predicate-contingency counts `Q_t` to the ordinary predictive state. `H_raw` remains exactly two completed transitions plus the current observation; no raw transcript widening, semantic feature addition, threshold change, budget change, or arm change was authorized.
+Three typed pre-result specification failures were found and minimally repaired before ARC implementation execution:
 
-The operative implementation specification is therefore:
+- `SF-001`: accumulated predicate evidence storage was under-specified;
+- `SF-002`: overlapping localized-correction arbitration was under-specified;
+- `SF-003`: proposal provenance conflicted with non-reconstructive aggregate storage.
 
-`IMPLEMENTATION_PREREGISTRATION_V1.md + IMPLEMENTATION_PREREGISTRATION_V1_1.md`.
+No comparative implementation result, sealed-holdout result, or environment-source inspection occurred before these repairs.
 
 Key frozen choices include:
 
 - raw history bound `H_raw = 2 completed transitions + current observation`;
 - no historical full-frame transcript outside the current frame;
 - exact schemas for `R_t`, `M_t`, `G_t`, `Lambda_t`, and `H_t`;
-- ordinary base predictive counts plus v1.1 aggregate predicate contingencies `Q_t`;
+- ordinary base predictive counts plus aggregate predicate contingencies `Q_t`;
 - primary transition target `z_t = 1[O_{t+1} != O_t]` with prequential binary NLL;
 - bounded non-semantic hypothesis predicate language;
-- localized CLPR correction operator;
+- localized CLPR correction operator with non-compositional arbitration;
+- two-tier proposal/forward provenance;
 - level-boundary persistence contrast;
 - AIEC v1 information-allocation rule and fixed-allocation controls;
 - frozen X authorization predicates;
@@ -173,18 +176,18 @@ Earned:
 - black-box short-sequence transition evidence
 - transition-relevant observational aliasing for the visible-frame interface in at least 3 development games
 - ARC3 operationalization contract v1
-- implementation preregistration v1 plus admissible pre-result v1.1 repair
-- requirement that first transition-relevant state representation include bounded interaction history
+- operative implementation preregistration through v1.3
+- bounded-history implementation requirement
 
-Authorized next:
+Authorized now:
 
-- code implementation against the operative v1+v1.1 specification
-- unit/invariant verification of that implementation
-- development-only matched execution only after verification passes
+- complete code implementation against the operative v1.x specification
+- pure unit/invariant verification
+- ARC development execution only after repository implementation and invariant verification are frozen
 
 Not earned:
 
-- implementation verification result
+- repository implementation verification result
 - task-relevant consequence model
 - goal/mechanic identification
 - CLPR witness
