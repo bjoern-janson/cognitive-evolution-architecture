@@ -169,11 +169,58 @@ Hypothesis ≠ Experiment
 Experiment ≠ Witness
 ComponentWitness ≠ CompositionWitness
 InheritedCompetence ≠ PersistentLearning ≠ OpenEndedImprovement
+UsefulDecomposition ≠ NecessaryMechanism
 Specification ≠ Implementation ≠ VerificationResult
 Evaluation ≠ Mutation
 ```
 
 These distinctions should remain reopenable when new evidence exposes a better decomposition, but they may not be collapsed for convenience.
+
+## Conception Termination Condition
+
+CEA's epistemic discipline applies to architecture generation itself.
+
+The stopping rule is:
+
+> **No new CEA layer without evidential pressure that the current architecture cannot represent.**
+
+A new conceptual layer is therefore not justified by elegance, analogy, completeness, or explanatory convenience alone.
+
+The authorized revision path is:
+
+```text
+Witness / contradiction / failure
+→ identify the shallowest deficient boundary
+→ generate competing explanations
+→ discriminate using independent evidence
+→ apply the minimal sufficient revision
+→ preserve unaffected structure
+→ retest
+```
+
+This is the distinction between:
+
+```text
+Architecture drift
+= structure added without new evidential necessity
+
+Architecture learning
+= structure revised because reality exposed a representational or mechanistic deficiency
+```
+
+The freeze is methodological, not dogmatic. Existing structure remains reopenable when evidence earns reopening.
+
+## Revision Triggers
+
+Examples of evidence capable of reopening CEA include:
+
+- a component witness that exposes a previously unrepresented composition requirement;
+- a negative result that breaks an assumed interaction;
+- a contradiction showing that an existing research-object distinction is insufficient;
+- an Issue #44 implementation or verification result that forces revision of the execution boundary;
+- a composition experiment that identifies a causal interaction not represented by the current conception.
+
+An interesting idea, semantic resonance with an external source, or a desire for architectural completeness is not by itself a revision trigger.
 
 ## Scientific / Cognitive Isomorphism
 
@@ -199,4 +246,6 @@ This is the conceptual bridge between CEA's research methodology and the Issue #
 
 ## Status
 
-This document is a **conception baseline** for CEA's epistemic architecture. It describes how research claims are allowed to acquire authority. It is not evidence that the CEA computational architecture is correct.
+This document is a **conception baseline** for CEA's epistemic architecture. It describes how research claims and architectural revisions are allowed to acquire authority. It is not evidence that the CEA computational architecture is correct.
+
+CEA is conception-frozen until an evidential trigger demonstrates that the current architecture cannot adequately represent an observed result, contradiction, or failure.

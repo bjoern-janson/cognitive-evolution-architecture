@@ -117,6 +117,7 @@ framework assertion ≠ empirical demonstration
 prediction ≠ result
 verified phenomenon ≠ mechanism
 inherited competence ≠ persistent learning ≠ open-ended improvement
+useful decomposition ≠ necessary mechanism
 validated consequence grants local authority; it does not automatically grant causal authority
 ```
 
@@ -215,7 +216,7 @@ Authority is earned locally at every transition. No inference leap is licensed b
 | CLPR | Conception hypothesis; independent empirical testing | Representation-level hypothesis |
 | AIEC | Conception hypothesis; independent empirical testing | Process-level hypothesis |
 | Cognitive Core | Conception specification | Persistent cognitive loop |
-| CEA composition | Conception frozen | Whole-architecture hypothesis |
+| CEA composition | Conception frozen; evidence-pulled revision only | Whole-architecture hypothesis |
 
 The active engineering bottleneck remains:
 
@@ -224,6 +225,51 @@ Issue #44 → implementation → verification → first witness
 ```
 
 Component witnesses, when earned, do not automatically promote the CEA composition. The composition must eventually survive its own ablations, negative controls, and interaction-specific falsification experiment.
+
+## Conception Freeze
+
+CEA now has a stopping rule for conception itself:
+
+> **No new CEA layer without evidential pressure that the current architecture cannot represent.**
+
+The permitted revision path is:
+
+```text
+Witness / contradiction / failure
+→ localize deficiency
+→ minimal sufficient revision
+→ preserve unaffected structure
+→ retest
+```
+
+This distinguishes two superficially similar forms of architectural change:
+
+```text
+Architecture drift
+= new structure without new evidential necessity
+
+Architecture learning
+= structural change forced by observed failure or newly established evidence
+```
+
+CEA should prefer architecture learning and reject architecture drift.
+
+A new idea may be recorded as a source claim, candidate hypothesis, or external motivation without becoming a new CEA layer. Existing layers remain provisional decompositions until experiments establish that they are causally load-bearing.
+
+The promotion rule is therefore:
+
+> **No existing layer is promoted from useful decomposition to necessary mechanism without an ablation capable of removing or breaking that mechanism while preserving relevant alternatives.**
+
+The active research loop is intentionally simple:
+
+```text
+CEA frozen
+→ independent experiments
+→ witnesses / failures
+→ evidence-pulled revision
+```
+
+Conception freeze does not mean empirical validation. It means the architecture has reached the point where further conceptual growth requires reality to supply the pressure.
 
 ## Working Rule
 
